@@ -10,6 +10,7 @@ using Button = UnityEngine.UI.Button;
 
 public class GamePlay : MonoBehaviour
 {
+
     bool isOn;
     [SerializeField]  GameObject onStateObj;
     [SerializeField]  GameObject offStateObj;
@@ -37,52 +38,25 @@ public class GamePlay : MonoBehaviour
         }
     }
 
-    public Collider2D foot1;
-    public Collider2D foot2;
+    public List<GameObject> currentCollisions = new List<GameObject>();
+    public Collider2D goal;
     public GameObject popupEndGame;
+    public Collider2D objWaterTest;
 
-    void Update()
+     void Update()
     {
-        List<GameObject> currentCollisions = new List<GameObject>();
-
-        void OnCollisionEnter(Collision col)
+        foreach (GameObject gObject in currentCollisions)
         {
-
-            // Add the GameObject collided with to the list.
-            currentCollisions.Add(col.gameObject);
-
-            // Print the entire list to the console.
-            foreach (GameObject gObject in currentCollisions)
+            if (gObject.GetComponent<Collider2D>().IsTouching(goal))
             {
-                print(gObject.name);
+                ShowPopupGameOver();
             }
         }
-
-        void OnCollisionExit(Collision col)
-        {
-
-            // Remove the GameObject collided with from the list.
-            currentCollisions.Remove(col.gameObject);
-
-            // Print the entire list to the console.
-            foreach (GameObject gObject in currentCollisions)
-            {
-                print(gObject.name);
-            }
-        }
-
-        //if (foot1.IsTouching(foot2))
-        //{
-
-        //    ShowPopupGameOver();
-        //}
-        //else
-        //{
-        //    Debug.Log("leg1 and leg2 NOT touching");
-        //}
     }
     public void ShowPopupGameOver()
     {
         popupEndGame.SetActive(true);
+        onStateObj.SetActive(true);
+
     }
 }
